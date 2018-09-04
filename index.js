@@ -8,10 +8,13 @@ class versionRequest {
     }
   }
 
-  static setVersionByHeader (headerName) {
+  static setVersionByHeader (headerName, defaultVersion = null) {
     return (req, res, next) => {
       if (req && req.headers) {
-        const version = (headerName && req.headers[headerName.toLowerCase()]) || req.headers['x-api-version']
+        var version = (headerName && req.headers[headerName.toLowerCase()]) || req.headers['x-api-version']
+        if(version == undefined && defaultVersion != null) {
+          version = defaultVersion;
+        }
         req.version = this.formatVersion(version)
       }
 
